@@ -46,12 +46,11 @@ int main()
 {
     std::ifstream file("1.5"); // 替换为你的文件名
     std::string line;
-    std::vector<double> data1, data2, data3, data4;
+    std::vector<double> data1, data2, data3, data4, data5;
     int count = 0;
 
     if (file.is_open())
     {
-        std::cout << "kkk";
         while (getline(file, line))
         {
             // 查找特定行
@@ -65,26 +64,28 @@ int main()
                 {
                     if (getline(file, line) && line.find("{") != std::string::npos)
                     {
-                        std::cout << line << std::endl;
+                        // std::cout << line << std::endl;
                         if (count == 0)
                         {
-                            std::cout << line << std::endl;
+                            // std::cout << line << std::endl;
                             parseData(line, data1);
-                            std::cout << "kkk";
+                            getline(file, line);
+                            // std::cout << line << std::endl;
+                            parseData(line, data2);
                         }
 
                         else if (count == 1)
                         {
-                            std::cout << line << std::endl;
-                            parseData(line, data2);
-                            std::cout << "kkk";
+                            // std::cout << line << std::endl;
+                            parseData(line, data3);
+                            getline(file, line);
+                            // std::cout << line << std::endl;
+                            parseData(line, data4);
                         }
-
+                        count++;
                         // 跳过闭合的大括号
-                                        }
+                    }
                 }
-                getline(file, line);
-                count++;
                 // 跳过外层大括号的闭合
                 getline(file, line);
                 // }
@@ -101,12 +102,38 @@ int main()
     }
 
     // 输出结果，用于验证
-    for (double num : data1)
+    // for (double num : data1)
+    //     std::cout << num << " ";
+    // std::cout << "\n";
+    // for (double num : data2)
+    //     std::cout << num << " ";
+    // std::cout << "\n";
+    // for (double num : data3)
+    //     std::cout << num << " ";
+    // std::cout << "\n";
+    // for (double num : data4)
+    //     std::cout << num << " ";
+    // std::cout << "\n";
+    for (size_t i = 0; i < data2.size(); ++i)
+    {
+        // 对应位置相乘并添加到data5
+        data5.push_back(data2[i] * data4[i]);
+    }
+    for (double num : data5)
         std::cout << num << " ";
     std::cout << "\n";
-    for (double num : data2)
-        std::cout << num << " ";
-    std::cout << "\n";
-
+    std::ofstream outFile("output.txt");
+    if (outFile.is_open())
+    {
+        for (size_t i = 0; i < data1.size() && i < data5.size(); ++i)
+        {
+            outFile << data1[i] << " " << data5[i] << "\n";
+        }
+        outFile.close();
+    }
+    else
+    {
+        std::cerr << "Unable to open file for writing.";
+    }
     return 0;
 }
