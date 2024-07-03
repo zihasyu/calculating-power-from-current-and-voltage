@@ -58,36 +58,36 @@ int main()
             if (line.find("set datasetList($curveName) {") != std::string::npos)
             {
                 // 读取下一行，即第一个大括号开始的行
-                if (getline(file, line) && line.find("{") != std::string::npos)
+                // if (getline(file, line) && line.find("{") != std::string::npos)
+                // {
+                // 读取并解析两组数据
+                for (int i = 0; i < 2; ++i)
                 {
-                    // 读取并解析两组数据
-                    for (int i = 0; i < 2; ++i)
+                    if (getline(file, line) && line.find("{") != std::string::npos)
                     {
-                        if (getline(file, line) && line.find("{") != std::string::npos)
+                        std::cout << line << std::endl;
+                        if (count == 0)
                         {
                             std::cout << line << std::endl;
-                            if (count == 0)
-                            {
-                                std::cout << line << std::endl;
-                                parseData(line, data1);
-                                std::cout << "kkk";
-                            }
-
-                            else if (count == 1)
-                            {
-                                std::cout << line << std::endl;
-                                parseData(line, data2);
-                                std::cout << "kkk";
-                            }
-
-                            // 跳过闭合的大括号
-                            getline(file, line);
+                            parseData(line, data1);
+                            std::cout << "kkk";
                         }
-                    }
-                    count++;
-                    // 跳过外层大括号的闭合
-                    getline(file, line);
+
+                        else if (count == 1)
+                        {
+                            std::cout << line << std::endl;
+                            parseData(line, data2);
+                            std::cout << "kkk";
+                        }
+
+                        // 跳过闭合的大括号
+                                        }
                 }
+                getline(file, line);
+                count++;
+                // 跳过外层大括号的闭合
+                getline(file, line);
+                // }
                 if (count >= 2)
                     break; // 只需要前两组数据
             }
